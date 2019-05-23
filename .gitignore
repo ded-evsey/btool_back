@@ -1,0 +1,12 @@
+#Ignore folder name 'mongoDB'
+mongoDB/
+#Ignore folder name 'pg'
+pg/
+#Ignore folder name 'venv'
+venv/
+#Ignore folder name '__pycache__'
+__pycache__/
+#Ignore folder name '.idea'
+.idea/
+
+
