@@ -1,6 +1,5 @@
 import pymongo as mongo
 import DBinfo
-import json_collections
 
 conn = mongo.MongoClient(DBinfo.mongo['server'], DBinfo.mongo['port'])
 db = conn[DBinfo.mongo['db_name']]
@@ -12,10 +11,6 @@ def get_collection(collection_type, name_collection='', db_name=db):
     else:
         full_name_collection = collection_type
     return db_name[full_name_collection]
-
-
-def collection_list(data_base=db):
-    return data_base.list_collection_names()
 
 
 class QueryMongo:
@@ -36,7 +31,7 @@ class QueryMongo:
         if self.type:
             return self.name_collection.find_one(self.data, self.params)
         else:
-            return self.name_collection.find(self.data, self.params)
+            return self.name_collection.find().sort(self.params)
 
     def delete(self):
         if self.type:

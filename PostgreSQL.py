@@ -106,7 +106,7 @@ class QueryPg(object):
         id, new = self.data.values()
         que = 'UPDATE {} set {} = {} where "id"' + self.condition + '{};'
         update_str = sql.SQL(que).format(sql.Identifier(self.table), sql.Identifier(self.column),
-                                         sql.Literal(id), sql.Literal(id)).as_string(self.pg)
+                                         sql.Literal(new), sql.Literal(id)).as_string(self.pg)
         self.pg.execute(update_str)
         return self.pg.rowcount
 

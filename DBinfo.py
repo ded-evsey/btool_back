@@ -37,7 +37,7 @@ pg_tables = {'users': {'id': 'id',
                         },
              'group_contacts': {'group_id': 'group_id',
                                 'user_id': 'user_id',
-                                'role_id':'role_id'
+                                'role_id': 'role_id'
                                 }
 
              }
@@ -52,7 +52,7 @@ mongo_collections = {'message_box': {'_id': '_id',
                                      },
                      'task_board': {'_id': '_id',
                                     'date_appearance': 'date_appearance',
-                                    'date_executions': 'date_executions',
+                                    'date_execution': 'date_execution',
                                     'content_task': 'content_task',
                                     'type': 'type',
                                     'content': 'content',
