@@ -3,6 +3,7 @@ from QyeryClass.Mongodb import QueryMongo
 import datetime
 import json
 from bson.objectid import ObjectId
+from ModuleBtool.analizations import sentimental
 
 
 def send_message():
@@ -40,7 +41,6 @@ def delete_message():
 
 def show_message():
     response = {'response': 'error'}
-
     messages = ''
     for item in QueryMongo(collection_type=request.args.get('table_name'),
                            query_type=0).select():
@@ -48,4 +48,17 @@ def show_message():
     if messages:
         response['response'] = 'success'
         response['messages'] = messages
+    return json.dumps(response)
+
+
+def sentimental_analysis_group():
+    response = {'response': 'error'}
+    list_massage = []
+    for item in QueryMongo(collection_type='message_box_g', name_collection=request.args.get('id')).select():
+        if item['content_message']['type'] == 'text':
+            list_massage.append(item['content_message']['content'])
+    if list_massage:
+        response['response'] = 'success'
+        response['result'] = sentimental.main(list_massage)
+
     return json.dumps(response)

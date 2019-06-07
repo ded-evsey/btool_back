@@ -61,6 +61,11 @@ def show_message():
     return message.show_message()
 
 
+@app.route('/sentimental_analysis_group', methods=['GET'])
+def sentimental_analysis_group():
+    return message.sentimental_analysis_group()
+
+
 @app.route('/new_group', methods=['POST'])
 def new_group():
     return group.new_group()

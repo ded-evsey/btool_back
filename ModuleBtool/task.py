@@ -1,5 +1,9 @@
 from flask import request
+from QyeryClass.PostgreSQL import QueryPg
+from QyeryClass.Mongodb import QueryMongo
+from DBinfo.DBinfo import pg_tables
 import json
+from bson.objectid import ObjectId
 
 
 #TODO:тут начинается боль
