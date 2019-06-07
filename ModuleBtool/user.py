@@ -115,8 +115,8 @@ def delete_contact_user():
 def add_role():
     response = {'response': 'error'}
     if QueryPg(table='role',
-            data={'name': request.args.get('name'),
-                  'discription': request.args.get('discription'),
-                  'cost': request.args.get('cost')}).insert():
+               data={'name': request.args.get('name'),
+                     'discription': request.args.get('discription'),
+                     'cost': request.args.get('cost')}).insert():
         response['response'] = 'success'
     return json.dumps(response)
