@@ -44,7 +44,7 @@ class Sentimental(object):
         return is_prefixed
 
     def load_neagations(self, filename):
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding="utf-8") as f:
             reader = csv.DictReader(f)
             negations = set([row['token'] for row in reader])
         self.negations |= negations
