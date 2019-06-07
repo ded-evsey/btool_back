@@ -1,20 +1,20 @@
-import pymongo as mongo
-import DBinfo
+import pymongo
+from DBinfo import mongo
 
-conn = mongo.MongoClient(DBinfo.mongo['server'], DBinfo.mongo['port'])
-db = conn[DBinfo.mongo['db_name']]
+conn = pymongo.MongoClient(mongo['server'], mongo['port'])
+db = conn[mongo['db_name']]
 
 
 def get_collection(collection_type, name_collection='', db_name=db):
     if( collection_type == "message_box" or collection_type == "task_board"):
-        full_name_collection = collection_type + "_" + name_collection
+        full_name_collection = collection_type + name_collection
     else:
         full_name_collection = collection_type
     return db_name[full_name_collection]
 
 
 class QueryMongo:
-    def __init__(self, collection_type='', name_collection='', data=(), update_data={}, query_type=1, query_params={}):
+    def __init__(self, collection_type='', name_collection='', data=(), update_data={}, query_type=1, query_params=()):
         self.name_collection = get_collection(collection_type, name_collection)
         self.data = data
         self.type = query_type
@@ -29,9 +29,9 @@ class QueryMongo:
 
     def select(self):
         if self.type:
-            return self.name_collection.find_one(self.data, self.params)
+            return self.name_collection.find_one(self.data)
         else:
-            return self.name_collection.find().sort(self.params)
+            return self.name_collection.find()
 
     def delete(self):
         if self.type:
@@ -44,4 +44,3 @@ class QueryMongo:
             return self.name_collection.update_one(self.data, self.update_data)
         else:
             return self.name_collection.update_many(self.data, self.update_data)
-

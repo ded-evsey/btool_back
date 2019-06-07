@@ -1,9 +1,8 @@
 import psycopg2
 from psycopg2 import sql
-import DBinfo as db
-
-conn = psycopg2.connect(dbname=db.posgresql['db_name'], user=db.posgresql['user'],
-                        host=db.posgresql['host'], port=db.posgresql['port'], password=db.posgresql['password'])
+from DBinfo import pg_tables, posgresql
+conn = psycopg2.connect(dbname=posgresql['db_name'], user=posgresql['user'],
+                        host=posgresql['host'], port=posgresql['port'], password=posgresql['password'])
 conn.autocommit = True
 cursor = conn.cursor()
 
@@ -70,7 +69,7 @@ class QueryPg(object):
         query_str = select_str.as_string(self.pg)
         self.pg.execute(query_str)
         for val in self.pg.fetchall():
-            response.append(dict(zip(db.pg_tables[self.table].values(), val)))
+            response.append(dict(zip(pg_tables[self.table].values(), val)))
         return response
 
     def insert(self):
