@@ -1,9 +1,6 @@
 import json
-from flask import Flask, request
-import user
-import message
-import group
-import task
+from flask import Flask
+from Methods import message, task, user, group
 
 app = Flask(__name__)
 

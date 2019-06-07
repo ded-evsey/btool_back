@@ -1,5 +1,5 @@
 from flask import request
-from Mongodb import QueryMongo
+from QyeryClass.Mongodb import QueryMongo
 import datetime
 import json
 from bson.objectid import ObjectId

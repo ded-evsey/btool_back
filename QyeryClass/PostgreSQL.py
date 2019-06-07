@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2 import sql
-from DBinfo import pg_tables, posgresql
+from DBinfo.DBinfo import pg_tables, posgresql
 conn = psycopg2.connect(dbname=posgresql['db_name'], user=posgresql['user'],
                         host=posgresql['host'], port=posgresql['port'], password=posgresql['password'])
 conn.autocommit = True

@@ -1,10 +1,5 @@
 from flask import request
-from PostgreSQL import QueryPg
-from Mongodb import QueryMongo
-from DBinfo import pg_tables
-import datetime
 import json
-from bson.objectid import ObjectId
 
 
 #TODO:тут начинается боль

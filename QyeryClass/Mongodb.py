@@ -1,5 +1,5 @@
 import pymongo
-from DBinfo import mongo
+from DBinfo.DBinfo import mongo
 
 conn = pymongo.MongoClient(mongo['server'], mongo['port'])
 db = conn[mongo['db_name']]

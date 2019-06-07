@@ -1,8 +1,7 @@
 from flask import request
-from PostgreSQL import QueryPg
-from Mongodb import QueryMongo
-from DBinfo import pg_tables
-import datetime
+from QyeryClass.PostgreSQL import QueryPg
+from QyeryClass.Mongodb import QueryMongo
+from DBinfo.DBinfo import pg_tables
 import json
 from bson.objectid import ObjectId
 
