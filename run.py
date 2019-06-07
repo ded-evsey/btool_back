@@ -11,6 +11,11 @@ def api_class():
     return json.dumps(response)
 
 
+@app.route('/add_role', methods=['POST'])
+def add_role():
+    return user.add_role()
+
+
 @app.route('/create_user', methods=['POST'])
 def create_user():
     return user.create_user()

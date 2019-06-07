@@ -110,3 +110,13 @@ def delete_contact_user():
             QueryMongo(collection_type=str(item['message_box']), query_type=0).delete()
             response['response'] = 'success'
     return json.dumps(response)
+
+
+def add_role():
+    response = {'response': 'error'}
+    if QueryPg(table='role',
+            data={'name': request.args.get('name'),
+                  'discription': request.args.get('discription'),
+                  'cost': request.args.get('cost')}).insert():
+        response['response'] = 'success'
+    return json.dumps(response)
