@@ -8,8 +8,9 @@ class Sentimental(object):
     def __init__(self, word_list=None, negation=None):
         if word_list is None and negation is None:
             base_dir = os.path.dirname(__file__)
-            word_list = [os.path.join(base_dir, p) for p in ['./word_list/afinn.csv', './word_list/russian.csv']]
-            negation = os.path.join(base_dir, './word_list/negations.csv')
+            word_list = [os.path.join(base_dir, p) for p in ['./word_list/sentimental/afinn.csv',
+                                                             './word_list/sentimental/russian.csv']]
+            negation = os.path.join(base_dir, './word_list/sentimental/negations.csv')
 
         self.word_list = {}
         self.negations = set()
@@ -85,7 +86,7 @@ class Sentimental(object):
 
 
 def main(list_massage):
-    sent = Sentimental(word_list=['./word_list/afinn.csv', './word_list/russian.csv'],
+    sent = Sentimental(word_list=['./word_list/sentimental/afinn.csv', './word_list/sentimental/russian.csv'],
                        negation='./word_list/negations.csv')
 
     response = {'good': 0, 'bad': 0, 'neutral': 0}
