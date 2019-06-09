@@ -1,7 +1,7 @@
 from flask import request
 from QyeryClass.PostgreSQL import QueryPg
 from QyeryClass.Mongodb import QueryMongo
-from DBinfo.DBinfo import pg_tables
+from DBinfo.DBinfo import pg_tables, mongo_collections
 import json
 from bson.objectid import ObjectId
 
@@ -20,9 +20,9 @@ def new_group():
         data[key] = request.args.get(key)
     group_id = QueryPg(table='groups', data=data).insert()
     message_box = QueryMongo(collection_type='message_box_g'+group_id,
-                             data={}).insert()
+                             data={mongo_collections['message_box']}).insert()
     task_board = QueryMongo(collection_type='task_board_g' + group_id,
-                            data={}).insert()
+                            data={mongo_collections['task_board']}).insert()
     if message_box and task_board:
         QueryMongo(collection_type='message_box_g' + group_id,
                    data={'_id': ObjectId(message_box)}).delete()

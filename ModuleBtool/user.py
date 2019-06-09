@@ -1,7 +1,7 @@
 from flask import request
 from QyeryClass.PostgreSQL import QueryPg
 from QyeryClass.Mongodb import QueryMongo
-from DBinfo.DBinfo import pg_tables
+from DBinfo.DBinfo import pg_tables, mongo_collections
 import datetime
 import json
 from bson.objectid import ObjectId
@@ -25,7 +25,7 @@ def create_user():
         else:
             data[key] = request.args.get(key)
     user_id = QueryPg(data=data).insert()
-    task_board = QueryMongo(collection_type="task_board_u" + user_id, data={}).insert()
+    task_board = QueryMongo(collection_type="task_board_u" + user_id, data={mongo_collections['task_board']}).insert()
     if task_board:
         print(task_board)
         QueryMongo(collection_type="task_board_u", name_collection=user_id, data={'_id': ObjectId(task_board)}).delete()
@@ -65,7 +65,7 @@ def login():
         for item in check_list:
             if (item['email'] == request.args.get('username') or item['tel_number'] == request.args.get('username')) and item['password'] == request.args.get('password'):
                 response['response'] = 'user find, her id = ' + str(item['id'])
-                contacts = QueryPg(table=item['contacts_list'])
+                contacts = QueryPg(table=item['contacts_list']).select()
                 response['contacts'] = contacts_user(contacts)
             else:
                 response['response'] = 'false password'
@@ -90,7 +90,7 @@ def new_contact_user():
     invite_id = request.args.get('friend_id')
     name_box = 'message_box_u'+initiator_id+"_u"+invite_id
     if len(QueryPg(table='user_contacts', data={'message_box': name_box}).select()) == 0:
-        id_message = QueryMongo(collection_type=name_box, data={}).insert()
+        id_message = QueryMongo(collection_type=name_box, data={mongo_collections['message_box']}).insert()
         QueryMongo(collection_type=name_box, data={"_id": ObjectId(id_message)}).delete()
         QueryPg(table='user_contacts_'+initiator_id, data={'user_id': initiator_id,
                                                            'friend_id': invite_id, 'message_box': name_box}).insert()

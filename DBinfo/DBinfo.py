@@ -46,15 +46,15 @@ mongo_collections = {'message_box': {'_id': '_id',
                                      'from_id': 'from_id',
                                      'to_id': 'to_id',
                                      'datetime': 'datetime',
-                                     'content_message': 'content_message',
-                                     'type': 'type',
-                                     'content': 'content'
+                                     'content_message': [{
+                                         'type': 'type',
+                                         'content': 'content'}]
                                      },
                      'task_board': {'_id': '_id',
                                     'date_appearance': 'date_appearance',
                                     'date_execution': 'date_execution',
-                                    'content_task': 'content_task',
-                                    'type': 'type',
-                                    'content': 'content',
-                                    'completed': 'completed'}
+                                    'completed': 'completed',
+                                    'content_task': [{
+                                        'type': 'type',
+                                        'content': 'content'}]}
                      }
