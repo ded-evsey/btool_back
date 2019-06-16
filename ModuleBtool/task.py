@@ -11,26 +11,26 @@ from datetime import datetime
 def create_task(rule):
     response = {'response': 'Pleas enter correct URL'}
     if rule == 'auto':
-        date_appearence, content = task_analization.main(request.args.get('content'))
+        date_appearence, content = task_analization.main(request.json.get('content'))
     elif rule == 'manually':
-        date_appearence = request.args.get('date_executions')
-        content  = request.args.get('content')
+        date_appearence = request.json.get('date_executions')
+        content  = request.json.get('content')
     else:
         return json.dumps(response)
     for item in QueryPg(table='users',
                         column='role_id',
-                        data={'id': request.args.get('author')}).select():
+                        data={'id': request.json.get('author')}).select():
         for iter in QueryPg(table='role',
                             column='cost',
                             data={'id': item}).select():
-            if QueryMongo(collection_type=request.args.get('table_name'),
+            if QueryMongo(collection_type=request.json.get('table_name'),
                           data={
                                   'date_appearance': datetime.now(),
                                   'date_executions': date_appearence,
                                   'cost': iter,
                                   'completed': False,
                                   'content_task': [{
-                                      'type': request.args.get('type'),
+                                      'type': request.json.get('type'),
                                       'content': content
                                   }]}).insert():
                 response['response'] = 'success'
@@ -40,19 +40,19 @@ def create_task(rule):
 
 def complete_task():
     response = {'response': 'error'}
-    if QueryMongo(collection_type=request.args.get('table_name'),
-                  data={'_id': ObjectId(request.args.get('id'))},
-                  update_data={'$set': {'completed': request.args.get('result')}}).update():
+    if QueryMongo(collection_type=request.json.get('table_name'),
+                  data={'_id': ObjectId(request.json.get('id'))},
+                  update_data={'$set': {'completed': request.json.get('result')}}).update():
         response['response'] = 'success'
     return json.dumps(response)
 
 
 def edit_task():
     response = {'response': 'error'}
-    if QueryMongo(collection_type=request.args.get('table_name'),
-                  data={'_id': ObjectId(request.args.get('id'))},
+    if QueryMongo(collection_type=request.json.get('table_name'),
+                  data={'_id': ObjectId(request.json.get('id'))},
                   update_data={'$set':{
-                      request.args.get('key'):request.args.get('value')
+                      request.json.get('key'):request.json.get('value')
                   }}).update():
         response['response'] = 'success'
     return json.dumps(response)
@@ -60,8 +60,8 @@ def edit_task():
 
 def delete_task():
     response = {'response': 'error'}
-    if QueryMongo(collection_type=request.args.get('table_name'),
-                  data={'_id': ObjectId(request.args.get('id'))}).delete():
+    if QueryMongo(collection_type=request.json.get('table_name'),
+                  data={'_id': ObjectId(request.json.get('id'))}).delete():
         response['response'] = 'success'
     return json.dumps(response)
 
@@ -72,9 +72,9 @@ def check_success_task():
     failed = 0
     done = 0
     all_task = 0
-    for item in QueryMongo(collection_type=request.args.get('table_name')).select():
-        if request.args.get('start') <= item['date_execution'] <= request.args.get('finish') \
-                or request.args.get('start') <= item['date_appearance'] <= request.args.get('finish'):
+    for item in QueryMongo(collection_type=request.json.get('table_name')).select():
+        if request.json.get('start') <= item['date_execution'] <= request.json.get('finish') \
+                or request.json.get('start') <= item['date_appearance'] <= request.json.get('finish'):
             all_task += item['cost']
             if item['completed'] == 'in_progress':
                 in_progress += item['cost']
