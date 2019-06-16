@@ -14,12 +14,19 @@ def get_collection(collection_type, name_collection='', db_name=db):
 
 
 class QueryMongo:
-    def __init__(self, collection_type='', name_collection='', data=(), update_data={}, query_type=1, query_params=()):
+    """
+    Класс для запросов к монго коллекциям
+    :param:collection_type- тип коллекции
+    :param:name_collection- название коллекции, если коллекция дочерняя
+    :param:data- данные для записи или удаления
+    :param:update_data- данные для замены
+    :param:query_type- бинарная переменная, если 1, как по умолчанию, то еденичный запрос, если 0, то множественный
+    """
+    def __init__(self, collection_type='', name_collection='', data=(), update_data={}, query_type=1):
         self.name_collection = get_collection(collection_type, name_collection)
         self.data = data
         self.type = query_type
         self.update_data = update_data
-        self.params = query_params
 
     def insert(self):
         if self.type:

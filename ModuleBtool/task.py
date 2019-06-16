@@ -1,5 +1,6 @@
 from flask import request
 from QyeryClass.Mongodb import QueryMongo
+from QyeryClass.PostgreSQL import QueryPg
 import json
 from bson.objectid import ObjectId
 from ModuleBtool.analizations import task_analization
@@ -16,16 +17,23 @@ def create_task(rule):
         content  = request.args.get('content')
     else:
         return json.dumps(response)
-    if QueryMongo(collection_type=request.args.get('table_name'),
-                  data={
-                          'date_appearance': datetime.now(),
-                          'date_executions': date_appearence,
-                          'completed': False,
-                          'content_task': [{
-                              'type': request.args.get('type'),
-                              'content': content
-                          }]}).insert():
-        response['response'] ='success'
+    for item in QueryPg(table='users',
+                        column='role_id',
+                        data={'id': request.args.get('author')}).select():
+        for iter in QueryPg(table='role',
+                            column='cost',
+                            data={'id': item}).select():
+            if QueryMongo(collection_type=request.args.get('table_name'),
+                          data={
+                                  'date_appearance': datetime.now(),
+                                  'date_executions': date_appearence,
+                                  'cost': iter,
+                                  'completed': False,
+                                  'content_task': [{
+                                      'type': request.args.get('type'),
+                                      'content': content
+                                  }]}).insert():
+                response['response'] = 'success'
     return json.dumps(response)
 #TODO:тут заканчивается боль
 
@@ -67,16 +75,17 @@ def check_success_task():
     for item in QueryMongo(collection_type=request.args.get('table_name')).select():
         if request.args.get('start') <= item['date_execution'] <= request.args.get('finish') \
                 or request.args.get('start') <= item['date_appearance'] <= request.args.get('finish'):
-            all_task += 1
+            all_task += item['cost']
             if item['completed'] == 'in_progress':
-                in_progress += 1
+                in_progress += item['cost']
             if item['completed'] == 'failed':
-                failed += 1
+                failed += item['cost']
             if item['completed'] == 'done':
-                done += 1
-    response['percent_in_progress'] = percent(all_task, in_progress)
-    response['percent_failed'] = percent(all_task, failed)
-    response['percent_done '] = percent(all_task, done)
+                done += item['cost']
+    response['in_progress'] = {'percent': percent(all_task, in_progress), 'cost': in_progress}
+    response['failed'] = {'percent':  percent(all_task, failed), 'cost': failed}
+    response['done '] = {'percent':  percent(all_task, done), 'cost': done}
+    response['all_task']['cost'] = all_task
     response['response'] = 'success'
     return json.dumps(response)
 

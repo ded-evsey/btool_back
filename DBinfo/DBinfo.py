@@ -53,6 +53,7 @@ mongo_collections = {'message_box': {'_id': '_id',
                      'task_board': {'_id': '_id',
                                     'date_appearance': 'date_appearance',
                                     'date_execution': 'date_execution',
+                                    'cost': 'cost',
                                     'completed': 'completed',
                                     'content_task': [{
                                         'type': 'type',
